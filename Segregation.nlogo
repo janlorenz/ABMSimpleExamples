@@ -86,7 +86,7 @@ fraction-similar-wanted
 fraction-similar-wanted
 0
 1
-0.3
+0.8
 0.01
 1
 NIL
@@ -151,7 +151,7 @@ BUTTON
 225
 118
 Ex 1
-set density 0.95\nset fraction-similar-wanted 0.3\nsetup wait 1\nrepeat 10 [go wait 0.5]
+set density 0.95\nset fraction-similar-wanted 0.3\nsetup\nrepeat 10 [go]
 NIL
 1
 T
@@ -168,7 +168,7 @@ BUTTON
 290
 118
 Ex 2
-set density 0.95\nset fraction-similar-wanted 0.8\nsetup wait 1\nrepeat 200 [go wait 0.1]
+set density 0.95\nset fraction-similar-wanted 0.8\nsetup\nrepeat 200 [go]
 NIL
 1
 T

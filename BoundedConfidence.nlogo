@@ -22,26 +22,14 @@ to go
   tick
 end
 
-
 to draw_trajectories
-  ;; let turtles move with their attitude trajectories from left to right across the world drawing trajectories or coloring patches
-  ; clear-drawing
-;  ask turtles [
-;    pen-up
-;    setxy (confine-scale-to-max-pxcor (item 0 opinion-list)) 0
-;  ]
   foreach (range 0 (length [opinion-list] of turtle 0)) [ t ->
-;   ask turtles [ pen-down ]
     foreach sort turtles
       [ [turt]-> ask turt [setxy confine-scale-to-max-pxcor (item t opinion-list) t] ]
     ask patches with [pycor = t] [
         set pcolor colorcode_bw (count turtles-here / (count turtles)) 0.4
     ]]
 end
-
-
-
-
 
 
 to-report confine-scale-to-max-pxcor [x ]
@@ -55,6 +43,7 @@ to-report colorcode [x max_x]
   report ifelse-value (max_x = 0) [black] [hsb (270 - 270 * (x / max_x)) 100 100]
 end
 
+; Only for the computation of Polarization based on Esteban & Ray 1994 (alpha = 1)
 to-report histfreq [opinions]
   report map [x -> length filter [y -> y >= x and y < x + 0.1] opinions / length opinions]  (n-values 20 [i -> 0.1 * i - 1])
 end
@@ -133,7 +122,7 @@ bound-of-confidence
 bound-of-confidence
 0
 1
-0.6
+0.5
 0.01
 1
 NIL
@@ -228,11 +217,11 @@ NIL
 TEXTBOX
 20
 250
-155
-290
-Agent density\nTime moving upward
+80
+380
+Agent\ndensity\n\nTime\nmoving \nupward
 12
-0.0
+14.0
 1
 
 PLOT
