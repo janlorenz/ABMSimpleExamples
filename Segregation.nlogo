@@ -48,7 +48,7 @@ ticks
 SLIDER
 10
 10
-210
+175
 43
 density
 density
@@ -61,9 +61,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-210
+175
 10
-290
+235
 43
 NIL
 setup
@@ -93,10 +93,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-80
-85
-135
-118
+235
+10
+290
+43
 NIL
 go
 T
@@ -111,9 +111,9 @@ NIL
 
 PLOT
 10
-405
+400
 290
-645
+610
 Average Fraction Similar
 time
 fraction
@@ -129,46 +129,46 @@ PENS
 "global" 1.0 0 -4539718 true "" "plot (count turtles with [color = blue] / count turtles) ^ 2 + (count turtles with [color = orange] / count turtles) ^ 2"
 
 BUTTON
-10
-85
-80
-118
-go once
-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-165
-85
-225
-118
-Ex 1
-set density 0.95\nset fraction-similar-wanted 0.3\nsetup\nrepeat 10 [go]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-225
+185
 85
 290
 118
-Ex 2
-set density 0.95\nset fraction-similar-wanted 0.8\nsetup\nrepeat 200 [go]
+go example
+ifelse ticks < ifelse-value (fraction-similar-wanted = 0.3) [10] [200] \n  [go] [stop]\n
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+10
+85
+85
+118
+setup ex1
+set density 0.95\nset fraction-similar-wanted 0.3\nsetup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+85
+85
+160
+118
+setup ex2
+set density 0.95\nset fraction-similar-wanted 0.8\nsetup
 NIL
 1
 T

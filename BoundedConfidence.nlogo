@@ -58,7 +58,7 @@ GRAPHICS-WINDOW
 10
 240
 293
-524
+490
 -1
 -1
 6.71
@@ -74,7 +74,7 @@ GRAPHICS-WINDOW
 -20
 20
 0
-40
+35
 0
 0
 1
@@ -84,7 +84,7 @@ ticks
 SLIDER
 10
 10
-210
+165
 43
 N
 N
@@ -97,9 +97,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-210
+165
 10
-290
+230
 43
 NIL
 setup
@@ -122,17 +122,17 @@ bound-of-confidence
 bound-of-confidence
 0
 1
-0.5
+0.6
 0.01
 1
 NIL
 HORIZONTAL
 
 BUTTON
-80
-85
-135
-118
+230
+10
+290
+43
 NIL
 go
 T
@@ -164,46 +164,46 @@ PENS
 "local" 0.1 1 -16777216 true "" "histogram [opinion] of turtles"
 
 BUTTON
-10
-85
-80
-118
-go once
-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-165
-85
-225
-118
-Ex 1
-set N 1000\nset bound-of-confidence 0.5\nsetup\nrepeat max-pycor [go]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-225
+190
 85
 290
 118
-Ex 2
-set N 1000\nset bound-of-confidence 0.6\nsetup\nrepeat max-pycor [go]
+go example
+ifelse ticks < max-pycor [go] [stop]
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+10
+85
+85
+118
+setup ex1
+set N 1000\nset bound-of-confidence 0.5\nsetup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+85
+85
+160
+118
+setup ex2
+set N 1000\nset bound-of-confidence 0.6\nsetup
 NIL
 1
 T
@@ -226,9 +226,9 @@ Agent\ndensity\n\nTime\nmoving \nupward
 
 PLOT
 10
-525
+490
 290
-645
+610
 Polarization
 time
 NIL
