@@ -16,7 +16,8 @@ to go
   ask turtles [ if (length opinion-list = max-pycor + 1) [ set opinion-list butfirst opinion-list ]] ;; cut oldest values for "rolling" attitude list
   ask turtles [
     let opinion-other [opinion] of one-of turtles
-    set opinion ifelse-value (abs (opinion - opinion-other) < bound-of-confidence) [(opinion + opinion-other) / 2] [opinion] ]
+    set opinion ifelse-value (abs (opinion - opinion-other) < bound-of-confidence) [(opinion + opinion-other) / 2] [opinion]
+  ]
   ask turtles [ set opinion-list lput opinion opinion-list ] ;; update the opinion-list
   draw_trajectories
   tick
@@ -122,7 +123,7 @@ bound-of-confidence
 bound-of-confidence
 0
 1
-0.6
+0.5
 0.01
 1
 NIL

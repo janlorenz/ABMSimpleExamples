@@ -4,7 +4,7 @@ to setup
     set pcolor white
     if random-float 1 < density [
       sprout 1 [
-        set color one-of [blue orange]
+        set color one-of [blue 27] ; 27 = light orange
         set shape "square"
   ] ] ]
   reset-ticks
@@ -86,7 +86,7 @@ fraction-similar-wanted
 fraction-similar-wanted
 0
 1
-0.8
+0.3
 0.01
 1
 NIL
@@ -126,7 +126,7 @@ true
 "" ""
 PENS
 "local" 1.0 0 -16777216 true "" "plot mean [ifelse-value (count (turtles-on neighbors) = 0) [0] [\n(count (turtles-on neighbors) with [color = [color] of myself]) / (count (turtles-on neighbors))]\n] of turtles"
-"global" 1.0 0 -4539718 true "" "plot (count turtles with [color = blue] / count turtles) ^ 2 + (count turtles with [color = orange] / count turtles) ^ 2"
+"global" 1.0 0 -4539718 true "" "plot (count turtles with [color = blue] / count turtles) ^ 2 + (count turtles with [color = 27] / count turtles) ^ 2"
 
 BUTTON
 185
@@ -182,39 +182,23 @@ NIL
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+This is a simple version of Schelling's Segregation model
 
-## HOW IT WORKS
+## How it work
 
-(what rules the agents use to create the overall behavior of the model)
-
-## HOW TO USE IT
-
-(how to use the model, including a description of each of the items in the Interface tab)
+Click "setup" and "go" to run a model forever.
+Click Example Setup 1 / 2 and click "go example" to run the two examples.
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+Example 1 shows how low fraction-similar-wanted leads to high segregation. 
+Example 2 shows that too high fration-of-similar wanted can bring the model to constant disorder without the capacity to self-order. 
 
-## THINGS TO TRY
-
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
-
-## EXTENDING THE MODEL
-
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
-
-## NETLOGO FEATURES
-
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
-
-## RELATED MODELS
-
-(models in the NetLogo Models Library and elsewhere which are of related interest)
 
 ## CREDITS AND REFERENCES
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+Jan Lorenz for the Paper
+"Data-driven Agent-based Modeling in Computational Social Science"
 @#$#@#$#@
 default
 true
