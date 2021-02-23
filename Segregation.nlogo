@@ -13,10 +13,11 @@ end
 to go
   ask turtles [
     let num-similar-neighbors (count (turtles-on neighbors) with [color = [color] of myself])
-    let num-neighbors (count (turtles-on neighbors) with [color = [color] of myself])
+    let num-neighbors (count (turtles-on neighbors))
     if num-similar-neighbors < fraction-similar-wanted * num-neighbors [
       move-to one-of patches with [count turtles-here = 0]
-  ] ]
+    ] 
+  ]
   tick
 end
 @#$#@#$#@
