@@ -1,44 +1,50 @@
+extensions [nw]
+turtles-own [protest-threshold protest?]
+
 to setup
   clear-all
-  ask patches [
-    set pcolor white
-    if random-float 1 < density [
-      sprout 1 [
-        set color one-of [blue 27] ; 27 = light orange
-        set shape "square"
-  ] ] ]
+  create-turtles 2000 [
+    set protest-threshold random-normal threshold-avg threshold-sd
+    set protest? false
+  ]
   reset-ticks
 end
 
 to go
-  ask turtles [
-    if (count (turtles-on neighbors) with [color = [color] of myself]) < fraction-similar-wanted * (count (turtles-on neighbors)) [
-      move-to one-of patches with [count turtles-here = 0]
-  ] ]
+  let frac-prot fraction-protest
+  if (count turtles with [protest-threshold < frac-prot] =
+    count turtles with [protest?]) [ stop ]
+  ask turtles with [protest-threshold < frac-prot] [
+    set protest? true
+  ]
   tick
+end
+
+to-report fraction-protest
+  report count turtles with [protest?] / count turtles
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-10
-120
-291
-402
+250
+175
+284
+210
 -1
 -1
-13.0
+8.7
 1
 10
 1
 1
 1
 0
-0
-0
 1
--10
-10
--10
-10
+1
+1
+-1
+1
+-1
+1
 0
 0
 1
@@ -48,22 +54,56 @@ ticks
 SLIDER
 10
 10
-175
+182
 43
-density
-density
+threshold-avg
+threshold-avg
 0
 1
-0.95
+0.25
 0.01
 1
 NIL
 HORIZONTAL
 
-BUTTON
-175
+SLIDER
 10
-235
+45
+182
+78
+threshold-sd
+threshold-sd
+0
+1
+0.13
+0.01
+1
+NIL
+HORIZONTAL
+
+PLOT
+10
+170
+295
+375
+histrogram protest-thresholds
+NIL
+NIL
+-0.2
+1.2
+0.0
+200.0
+false
+true
+"" ""
+PENS
+"protest" 0.025 1 -2674135 true "" "histogram [protest-threshold] of turtles with [protest?]"
+"no protest" 0.025 1 -16777216 true "" "histogram [protest-threshold] of turtles with [not protest?]"
+
+BUTTON
+230
+10
+295
 43
 NIL
 setup
@@ -77,29 +117,14 @@ NIL
 NIL
 1
 
-SLIDER
-10
-50
-290
-83
-fraction-similar-wanted
-fraction-similar-wanted
-0
-1
-0.8
-0.01
-1
-NIL
-HORIZONTAL
-
 BUTTON
-235
-10
-290
-43
+230
+45
+295
+78
 NIL
 go
-T
+NIL
 1
 T
 OBSERVER
@@ -108,50 +133,65 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+10
+125
+115
+170
+# initial protest
+count turtles with [protest-threshold < 0]
+17
+1
+11
+
+MONITOR
+190
+125
+295
+170
+# never protest
+count turtles with [protest-threshold > 1]
+17
+1
+11
 
 PLOT
 10
-400
-290
+375
+295
 610
-Average Fraction Similar
-time
-fraction
+plot 1
+NIL
+NIL
 0.0
-10.0
+2.0
 0.0
-1.0
+2000.0
 true
-true
+false
 "" ""
 PENS
-"local" 1.0 0 -16777216 true "" "plot mean [ifelse-value (count (turtles-on neighbors) = 0) [0] [\n(count (turtles-on neighbors) with [color = [color] of myself]) / (count (turtles-on neighbors))]\n] of turtles"
-"global" 1.0 0 -4539718 true "" "plot (count turtles with [color = blue] / count turtles) ^ 2 + (count turtles with [color = 27] / count turtles) ^ 2"
+"default" 1.0 0 -2674135 true "" "plot count turtles with [protest?]"
 
-BUTTON
-185
-85
-290
-118
-go example
-ifelse ticks < ifelse-value (fraction-similar-wanted = 0.3) [10] [200] \n  [go] [stop]\n
-T
+MONITOR
+50
+375
+125
+420
+# protest
+count turtles with [protest?]
+17
 1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
+11
 
 BUTTON
 10
 85
-85
+132
 118
-setup ex1
-set density 0.95\nset fraction-similar-wanted 0.3\nsetup
+setup go ex1
+set threshold-avg 0.25\nset threshold-sd 0.12\nsetup\nrepeat 40 [go]
 NIL
 1
 T
@@ -163,12 +203,12 @@ NIL
 1
 
 BUTTON
+135
 85
-85
-160
+257
 118
-setup ex2
-set density 0.95\nset fraction-similar-wanted 0.8\nsetup
+setup go ex2
+set threshold-avg 0.25\nset threshold-sd 0.13\nsetup\nrepeat 40 [go]
 NIL
 1
 T
@@ -182,23 +222,39 @@ NIL
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a simple version of Schelling's Segregation model
+(a general understanding of what the model is trying to show or explain)
 
-## How it work
+## HOW IT WORKS
 
-Click "setup" and "go" to run a model forever.
-Click Example Setup 1 / 2 and click "go example" to run the two examples.
+(what rules the agents use to create the overall behavior of the model)
+
+## HOW TO USE IT
+
+(how to use the model, including a description of each of the items in the Interface tab)
 
 ## THINGS TO NOTICE
 
-Example 1 shows how low fraction-similar-wanted leads to high segregation. 
-Example 2 shows that too high fration-similar-wanted can bring the model to constant disorder without the capacity to self-order. 
+(suggested things for the user to notice while running the model)
 
+## THINGS TO TRY
+
+(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+
+## EXTENDING THE MODEL
+
+(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
+
+## NETLOGO FEATURES
+
+(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
+
+## RELATED MODELS
+
+(models in the NetLogo Models Library and elsewhere which are of related interest)
 
 ## CREDITS AND REFERENCES
 
-Jan Lorenz for the Paper
-"Data-driven Agent-based Modeling in Computational Social Science"
+(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
 @#$#@#$#@
 default
 true

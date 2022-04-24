@@ -1,31 +1,56 @@
+globals [basicincome]
+turtles-own [wealth ability]
+
 to setup
   clear-all
   ask patches [
     set pcolor white
-    if random-float 1 < density [
-      sprout 1 [
-        set color one-of [blue 27] ; 27 = light orange
-        set shape "square"
-  ] ] ]
+    sprout 1 [
+      set shape "face happy"
+      set wealth 1
+      set size sqrt wealth
+    ]
+  ]
+  set basicincome (sum [wealth] of turtles) * taxrate * (1 - adminrate) / count turtles
   reset-ticks
 end
 
 to go
-  ask turtles [
-    if (count (turtles-on neighbors) with [color = [color] of myself]) < fraction-similar-wanted * (count (turtles-on neighbors)) [
-      move-to one-of patches with [count turtles-here = 0]
-  ] ]
+  ask turtles [ produce-simple ]
+  set basicincome (sum [wealth] of turtles) * taxrate * (1 - adminrate) / count turtles
+  ask turtles [ redistribute ]
+  ask turtles [ ; This is visualization only!
+    ifelse wealth < 0.2
+     [set size 0.2] ; This is the the minimal size. So, all turtles remain visible even wealth is super smal
+     [set size sqrt wealth]
+    ]
   tick
+end
+
+to produce-simple
+  ifelse (random-float 1) < 0.5 ; 50% chance of success or failure
+    [ set wealth (wealth * success_factor) ]
+    [ set wealth (wealth * failure_factor) ]
+end
+
+to redistribute
+  set wealth ((1 - taxrate) * wealth + basicincome)
+end
+
+;; Reporters
+
+to-report partial-sums [nums] ; cumsum equivalent used for Lorenz curve
+  report butfirst reverse reduce [ [?1 ?2] -> fput (?2 + first ?1) ?1 ] fput [0] nums
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
 10
-120
-291
-402
+200
+288
+479
 -1
 -1
-13.0
+27.0
 1
 10
 1
@@ -35,36 +60,138 @@ GRAPHICS-WINDOW
 0
 0
 1
--10
-10
--10
-10
 0
+9
 0
+9
+1
+1
 1
 ticks
 30.0
 
 SLIDER
 10
-10
-175
-43
-density
-density
+95
+150
+128
+taxrate
+taxrate
 0
 1
-0.95
+0.0
 0.01
 1
 NIL
 HORIZONTAL
 
 BUTTON
-175
+225
+95
+285
+128
+Go
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+140
 10
-235
+285
 43
+success_factor
+success_factor
+1
+2
+1.5
+0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+10
+10
+140
+43
+failure_factor
+failure_factor
+0
+1
+0.55
+0.01
+1
+NIL
+HORIZONTAL
+
+MONITOR
+10
+45
+125
+90
+avg growth factor
+success_factor * 0.5 + failure_factor * 0.5
+3
+1
+11
+
+MONITOR
+125
+45
+210
+90
+geom mean
+exp ((ln success_factor) * 0.5 + (ln failure_factor) * 0.5)
+3
+1
+11
+
+PLOT
+10
+480
+290
+608
+total wealth
+time
+wealth
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" "set-plot-x-range 0 max list 1 ticks"
+PENS
+"default" 1.0 0 -16777216 true "" "plot sum [wealth] of turtles"
+
+SLIDER
+10
+130
+150
+163
+adminrate
+adminrate
+0
+0.3
+0.05
+0.01
+1
+NIL
+HORIZONTAL
+
+BUTTON
+150
+95
+225
+128
 NIL
 setup
 NIL
@@ -77,29 +204,14 @@ NIL
 NIL
 1
 
-SLIDER
-10
-50
-290
-83
-fraction-similar-wanted
-fraction-similar-wanted
-0
-1
-0.8
-0.01
-1
-NIL
-HORIZONTAL
-
 BUTTON
-235
 10
-290
-43
+165
+75
+198
+ex1
+setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0\nset adminrate 0.05\nrepeat 250 [go]
 NIL
-go
-T
 1
 T
 OBSERVER
@@ -109,96 +221,97 @@ NIL
 NIL
 1
 
-PLOT
+BUTTON
+75
+165
+140
+198
+ex2
+setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0.2\nset adminrate 0.05\nrepeat 250 [go]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+140
+165
+202
+198
+ex3
+setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0.6\nset adminrate 0.05\nrepeat 250 [go]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+MONITOR
+230
+155
+287
+200
+gini
+( 2 * sum (map [ [x y] -> x * y ] n-values count turtles [ z -> z + 1 ] sort [wealth] of turtles) ) / (count turtles * (sum [wealth] of turtles)) - (count turtles + 1) / count turtles
+3
+1
+11
+
+TEXTBOX
+215
+45
+280
+75
+50% fail, 50% success
 10
-400
-290
-610
-Average Fraction Similar
-time
-fraction
 0.0
-10.0
-0.0
-1.0
-true
-true
-"" ""
-PENS
-"local" 1.0 0 -16777216 true "" "plot mean [ifelse-value (count (turtles-on neighbors) = 0) [0] [\n(count (turtles-on neighbors) with [color = [color] of myself]) / (count (turtles-on neighbors))]\n] of turtles"
-"global" 1.0 0 -4539718 true "" "plot (count turtles with [color = blue] / count turtles) ^ 2 + (count turtles with [color = 27] / count turtles) ^ 2"
-
-BUTTON
-185
-85
-290
-118
-go example
-ifelse ticks < ifelse-value (fraction-similar-wanted = 0.3) [10] [200] \n  [go] [stop]\n
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-10
-85
-85
-118
-setup ex1
-set density 0.95\nset fraction-similar-wanted 0.3\nsetup
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-85
-85
-160
-118
-setup ex2
-set density 0.95\nset fraction-similar-wanted 0.8\nsetup
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
 1
 
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a simple version of Schelling's Segregation model
+(a general understanding of what the model is trying to show or explain)
 
-## How it work
+## HOW IT WORKS
 
-Click "setup" and "go" to run a model forever.
-Click Example Setup 1 / 2 and click "go example" to run the two examples.
+(what rules the agents use to create the overall behavior of the model)
+
+## HOW TO USE IT
+
+(how to use the model, including a description of each of the items in the Interface tab)
 
 ## THINGS TO NOTICE
 
-Example 1 shows how low fraction-similar-wanted leads to high segregation. 
-Example 2 shows that too high fration-similar-wanted can bring the model to constant disorder without the capacity to self-order. 
+(suggested things for the user to notice while running the model)
 
+## THINGS TO TRY
+
+(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+
+## EXTENDING THE MODEL
+
+(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
+
+## NETLOGO FEATURES
+
+(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
+
+## RELATED MODELS
+
+(models in the NetLogo Models Library and elsewhere which are of related interest)
 
 ## CREDITS AND REFERENCES
 
-Jan Lorenz for the Paper
-"Data-driven Agent-based Modeling in Computational Social Science"
+(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
 @#$#@#$#@
 default
 true
@@ -394,19 +507,12 @@ Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
 
 sheep
 false
-15
-Circle -1 true true 203 65 88
-Circle -1 true true 70 65 162
-Circle -1 true true 150 105 120
-Polygon -7500403 true false 218 120 240 165 255 165 278 120
-Circle -7500403 true false 214 72 67
-Rectangle -1 true true 164 223 179 298
-Polygon -1 true true 45 285 30 285 30 240 15 195 45 210
-Circle -1 true true 3 83 150
-Rectangle -1 true true 65 221 80 296
-Polygon -1 true true 195 285 210 285 210 240 240 210 195 210
-Polygon -7500403 true false 276 85 285 105 302 99 294 83
-Polygon -7500403 true false 219 85 210 105 193 99 201 83
+0
+Rectangle -7500403 true true 151 225 180 285
+Rectangle -7500403 true true 47 225 75 285
+Rectangle -7500403 true true 15 75 210 225
+Circle -7500403 true true 135 75 150
+Circle -16777216 true false 165 76 116
 
 square
 false
@@ -491,13 +597,6 @@ Line -7500403 true 216 40 79 269
 Line -7500403 true 40 84 269 221
 Line -7500403 true 40 216 269 79
 Line -7500403 true 84 40 221 269
-
-wolf
-false
-0
-Polygon -16777216 true false 253 133 245 131 245 133
-Polygon -7500403 true true 2 194 13 197 30 191 38 193 38 205 20 226 20 257 27 265 38 266 40 260 31 253 31 230 60 206 68 198 75 209 66 228 65 243 82 261 84 268 100 267 103 261 77 239 79 231 100 207 98 196 119 201 143 202 160 195 166 210 172 213 173 238 167 251 160 248 154 265 169 264 178 247 186 240 198 260 200 271 217 271 219 262 207 258 195 230 192 198 210 184 227 164 242 144 259 145 284 151 277 141 293 140 299 134 297 127 273 119 270 105
-Polygon -7500403 true true -1 195 14 180 36 166 40 153 53 140 82 131 134 133 159 126 188 115 227 108 236 102 238 98 268 86 269 92 281 87 269 103 269 113
 
 x
 false

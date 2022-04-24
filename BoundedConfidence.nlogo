@@ -5,46 +5,45 @@ to setup
   ask patches [set pcolor white]
   create-turtles N [
     set hidden? true
-    set opinion 1 - random-float 2
-    set opinion-list (list opinion)
-    setxy confine-scale-to-max-pxcor opinion 0
+    set opinion 1 - random-float 2 ; initial opinions
+    set opinion-list (list opinion) ; The opinion-list is used for visualization
   ]
   reset-ticks
 end
 
 to go
-  ask turtles [ if (length opinion-list = max-pycor + 1) [ set opinion-list butfirst opinion-list ]] ;; cut oldest values for "rolling" attitude list
   ask turtles [
     let opinion-other [opinion] of one-of turtles
-    set opinion ifelse-value (abs (opinion - opinion-other) < bound-of-confidence) [(opinion + opinion-other) / 2] [opinion]
+    if (abs (opinion - opinion-other) < bound-of-confidence) [
+      set opinion (opinion + opinion-other) / 2
+    ]
   ]
-  ask turtles [ set opinion-list lput opinion opinion-list ] ;; update the opinion-list
-  draw_trajectories
+  visualize
   tick
 end
 
-to draw_trajectories
+
+
+
+
+;; BELOW IS CODE FOR VISUALIZATION AND COMPUTATION OF POLARIZATION
+
+to visualize
+  ask turtles [ if (length opinion-list = max-pycor + 1) [ set opinion-list butfirst opinion-list ]] ;; cut oldest values for "rolling" attitude list
+  ask turtles [ set opinion-list lput opinion opinion-list ] ;; update the opinion-list
   foreach (range 0 (length [opinion-list] of turtle 0)) [ t ->
     foreach sort turtles
-      [ [turt]-> ask turt [setxy confine-scale-to-max-pxcor (item t opinion-list) t] ]
+      [ [turt]-> ask turt [setxy max-pxcor * (item t opinion-list) t] ]
     ask patches with [pycor = t] [
         set pcolor colorcode_bw (count turtles-here / (count turtles)) 0.4
     ]]
 end
 
-
-to-report confine-scale-to-max-pxcor [x ]
-  let y max list (min list x (1 - 0.0000000001)) (- 1 + 0.0000000001)
-  report y * max-pxcor ;; set to 0.999999999 instead of 1 to make these attitudes visible in attitude histogram
-end
 to-report colorcode_bw [x max_x]
   report 9.9 - 9.9 * min (list (x / max_x) max_x) / max_x
 end
-to-report colorcode [x max_x]
-  report ifelse-value (max_x = 0) [black] [hsb (270 - 270 * (x / max_x)) 100 100]
-end
 
-; Only for the computation of Polarization based on Esteban & Ray 1994 (alpha = 1)
+; For the computation of Polarization based on Esteban & Ray 1994 (alpha = 1)
 to-report histfreq [opinions]
   report map [x -> length filter [y -> y >= x and y < x + 0.1] opinions / length opinions]  (n-values 20 [i -> 0.1 * i - 1])
 end
@@ -585,7 +584,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.2.0
+NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
