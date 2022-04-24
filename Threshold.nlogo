@@ -1,4 +1,3 @@
-extensions [nw]
 turtles-own [protest-threshold protest?]
 
 to setup
