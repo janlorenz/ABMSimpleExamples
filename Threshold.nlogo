@@ -10,18 +10,14 @@ to setup
 end
 
 to go
-  let frac-prot fraction-protest
-  if count turtles with [protest-threshold < frac-prot] < 0 [stop]
-  if (count turtles with [protest-threshold < frac-prot] =
+  let fraction-protest count turtles with [protest?] / count turtles
+  if count turtles with [protest-threshold < fraction-protest] < 0 [stop]
+  if (count turtles with [protest-threshold < fraction-protest] =
     count turtles with [protest?]) [ stop ]
-  ask turtles with [protest-threshold < frac-prot] [
+  ask turtles with [protest-threshold < fraction-protest] [
     set protest? true
   ]
   tick
-end
-
-to-report fraction-protest
-  report count turtles with [protest?] / count turtles
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
