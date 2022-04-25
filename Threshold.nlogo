@@ -11,9 +11,10 @@ end
 
 to go
   let frac-prot fraction-protest
-  if (count turtles with [protest-threshold < frac-prot] =
+  if count turtles with [protest-threshold < fraction-protest] < 0 [stop]
+  if (count turtles with [protest-threshold < fraction-protest] =
     count turtles with [protest?]) [ stop ]
-  ask turtles with [protest-threshold < frac-prot] [
+  ask turtles with [protest-threshold < fraction-protest] [
     set protest? true
   ]
   tick
@@ -52,9 +53,9 @@ ticks
 
 SLIDER
 10
-10
-182
-43
+45
+155
+78
 threshold-avg
 threshold-avg
 0
@@ -66,9 +67,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-10
+155
 45
-182
+295
 78
 threshold-sd
 threshold-sd
@@ -100,9 +101,9 @@ PENS
 "no protest" 0.025 1 -16777216 true "" "histogram [protest-threshold] of turtles with [not protest?]"
 
 BUTTON
-230
+165
 10
-295
+230
 43
 NIL
 setup
@@ -118,9 +119,9 @@ NIL
 
 BUTTON
 230
-45
+10
 295
-78
+43
 NIL
 go
 NIL
@@ -187,10 +188,10 @@ count turtles with [protest?]
 BUTTON
 10
 85
-132
+85
 118
-setup go ex1
-set threshold-avg 0.25\nset threshold-sd 0.12\nsetup\nrepeat 40 [go]
+setup ex1
+set threshold-avg 0.25\nset threshold-sd 0.12\nsetup
 NIL
 1
 T
@@ -202,13 +203,30 @@ NIL
 1
 
 BUTTON
-135
 85
-257
+85
+165
 118
-setup go ex2
-set threshold-avg 0.25\nset threshold-sd 0.13\nsetup\nrepeat 40 [go]
+setup ex2
+set threshold-avg 0.25\nset threshold-sd 0.13\nsetup
 NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+180
+85
+292
+118
+go example
+go
+T
 1
 T
 OBSERVER

@@ -39,9 +39,9 @@ end
 
 ;; Reporters
 
-to-report partial-sums [nums] ; cumsum equivalent used for Lorenz curve
-  report butfirst reverse reduce [ [?1 ?2] -> fput (?2 + first ?1) ?1 ] fput [0] nums
-end
+;to-report partial-sums [nums] ; cumsum equivalent used for Lorenz curve
+;  report butfirst reverse reduce [ [?1 ?2] -> fput (?2 + first ?1) ?1 ] fput [0] nums
+;end
 @#$#@#$#@
 GRAPHICS-WINDOW
 10
@@ -72,14 +72,14 @@ ticks
 
 SLIDER
 10
-95
+130
 150
-128
+163
 taxrate
 taxrate
 0
 1
-0.0
+0.2
 0.01
 1
 NIL
@@ -87,10 +87,10 @@ HORIZONTAL
 
 BUTTON
 225
-95
+10
 285
-128
-Go
+43
+NIL
 go
 T
 1
@@ -104,9 +104,9 @@ NIL
 
 SLIDER
 140
-10
+50
 285
-43
+83
 success_factor
 success_factor
 1
@@ -119,9 +119,9 @@ HORIZONTAL
 
 SLIDER
 10
-10
+50
 140
-43
+83
 failure_factor
 failure_factor
 0
@@ -134,9 +134,9 @@ HORIZONTAL
 
 MONITOR
 10
-45
+85
 125
-90
+130
 avg growth factor
 success_factor * 0.5 + failure_factor * 0.5
 3
@@ -145,9 +145,9 @@ success_factor * 0.5 + failure_factor * 0.5
 
 MONITOR
 125
-45
+85
 210
-90
+130
 geom mean
 exp ((ln success_factor) * 0.5 + (ln failure_factor) * 0.5)
 3
@@ -155,9 +155,9 @@ exp ((ln success_factor) * 0.5 + (ln failure_factor) * 0.5)
 11
 
 PLOT
-10
+60
 480
-290
+285
 608
 total wealth
 time
@@ -173,9 +173,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot sum [wealth] of turtles"
 
 SLIDER
-10
-130
 150
+130
+285
 163
 adminrate
 adminrate
@@ -188,10 +188,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-150
-95
+165
+10
 225
-128
+43
 NIL
 setup
 NIL
@@ -207,10 +207,10 @@ NIL
 BUTTON
 10
 165
-75
+65
 198
 ex1
-setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0\nset adminrate 0.05\nrepeat 250 [go]
+setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0\nset adminrate 0.05
 NIL
 1
 T
@@ -222,12 +222,12 @@ NIL
 1
 
 BUTTON
-75
+65
 165
-140
+120
 198
 ex2
-setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0.2\nset adminrate 0.05\nrepeat 250 [go]
+setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0.2\nset adminrate 0.05
 NIL
 1
 T
@@ -239,13 +239,40 @@ NIL
 1
 
 BUTTON
-140
+120
 165
-202
+175
 198
 ex3
-setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0.6\nset adminrate 0.05\nrepeat 250 [go]
+setup\nset failure_factor 0.55\nset success_factor 1.5\nset taxrate 0.6\nset adminrate 0.05
 NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+TEXTBOX
+15
+30
+155
+48
+50% fail, 50% success
+12
+0.0
+1
+
+BUTTON
+175
+165
+287
+198
+go example
+ifelse (ticks <= 250) [go] [stop]
+T
 1
 T
 OBSERVER
@@ -256,25 +283,15 @@ NIL
 1
 
 MONITOR
-230
-155
-287
-200
+10
+480
+60
+525
 gini
 ( 2 * sum (map [ [x y] -> x * y ] n-values count turtles [ z -> z + 1 ] sort [wealth] of turtles) ) / (count turtles * (sum [wealth] of turtles)) - (count turtles + 1) / count turtles
 3
 1
 11
-
-TEXTBOX
-215
-45
-280
-75
-50% fail, 50% success
-10
-0.0
-1
 
 @#$#@#$#@
 ## WHAT IS IT?
