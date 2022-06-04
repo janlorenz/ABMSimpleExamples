@@ -23,9 +23,6 @@ to go
 end
 
 
-
-
-
 ;; BELOW IS CODE FOR VISUALIZATION AND COMPUTATION OF POLARIZATION
 
 to visualize
@@ -43,22 +40,22 @@ to-report colorcode_bw [x max_x]
   report 9.9 - 9.9 * min (list (x / max_x) max_x) / max_x
 end
 
-; For the computation of Polarization based on Esteban & Ray 1994 (alpha = 1)
+; For the computation of Polarization based on Esteban & Ray 1994
 to-report histfreq [opinions]
   report map [x -> length filter [y -> y >= x and y < x + 0.1] opinions / length opinions]  (n-values 20 [i -> 0.1 * i - 1])
 end
-to-report pol [p]
-  report reduce + (map [ [a b] -> a * b]
-    reduce sentence map [x -> map [y -> x ^ 2 * y] p] p
+to-report pol [p alpha]
+  report 2 ^ (1 + alpha) / 1.9 * reduce + (map [ [a b] -> a * b]
+    reduce sentence map [x -> map [y -> x ^ (1 + alpha) * y] p] p
     reduce sentence map [x -> map [y -> abs (x - y)] (n-values 20 [i -> 0.1 * i - 0.95])] (n-values 20 [i -> 0.1 * i - 0.95])
   )
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
 10
-240
+235
 293
-490
+485
 -1
 -1
 6.71
@@ -115,14 +112,14 @@ NIL
 
 SLIDER
 10
-50
+45
 290
-83
+78
 bound-of-confidence
 bound-of-confidence
 0
 1
-0.5
+0.6
 0.01
 1
 NIL
@@ -147,10 +144,10 @@ NIL
 
 PLOT
 10
-120
+115
 290
-240
-Opinion Distribution
+235
+opinion distribution
 opinion
 NIL
 -1.1
@@ -165,9 +162,9 @@ PENS
 
 BUTTON
 190
-85
+80
 290
-118
+113
 go example
 ifelse ticks < max-pycor [go] [stop]
 T
@@ -182,9 +179,9 @@ NIL
 
 BUTTON
 10
+80
 85
-85
-118
+113
 setup ex1
 set N 1000\nset bound-of-confidence 0.5\nsetup
 NIL
@@ -199,9 +196,9 @@ NIL
 
 BUTTON
 85
-85
+80
 160
-118
+113
 setup ex2
 set N 1000\nset bound-of-confidence 0.6\nsetup
 NIL
@@ -226,21 +223,22 @@ Agent\ndensity\n\nTime\nmoving \nupward
 
 PLOT
 10
-490
+485
 290
 610
-Polarization
+polarization
 time
 NIL
 0.0
 10.0
 0.0
-0.1
+0.05
 true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot pol histfreq [opinion] of turtles \n\n; plot mean [mean [abs (opinion - [opinion] of myself)] of turtles] of turtles"
+"default" 1.0 0 -16777216 true "" "plot pol (histfreq [opinion] of turtles) 1\n\n; plot mean [mean [abs (opinion - [opinion] of myself)] of turtles] of turtles"
+"pen-1" 1.0 0 -7500403 true "" "plot pol (histfreq [opinion] of turtles) 0"
 
 @#$#@#$#@
 ## WHAT IS IT?

@@ -16,7 +16,7 @@ to go
     let num-neighbors (count (turtles-on neighbors))
     if num-similar-neighbors < fraction-similar-wanted * num-neighbors [
       move-to one-of patches with [count turtles-here = 0]
-    ] 
+    ]
   ]
   tick
 end
@@ -89,7 +89,7 @@ fraction-similar-wanted
 fraction-similar-wanted
 0
 1
-0.8
+0.3
 0.01
 1
 NIL
@@ -117,7 +117,7 @@ PLOT
 400
 290
 610
-Average Fraction Similar
+average fraction similar
 time
 fraction
 0.0

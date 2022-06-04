@@ -82,7 +82,7 @@ PLOT
 170
 295
 375
-histrogram protest-thresholds
+protest-thresholds
 NIL
 NIL
 -0.2
@@ -157,9 +157,9 @@ PLOT
 375
 295
 610
-plot 1
-NIL
-NIL
+protest size
+time
+number protesters
 0.0
 2.0
 0.0
@@ -173,7 +173,7 @@ PENS
 MONITOR
 50
 375
-125
+120
 420
 # protest
 count turtles with [protest?]

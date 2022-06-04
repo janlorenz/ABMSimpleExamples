@@ -625,6 +625,25 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="taxrate">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="failure_factor">
+      <value value="0.55"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="success_factor">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="adminrate">
+      <value value="0.05"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
