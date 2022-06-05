@@ -79,7 +79,7 @@ taxrate
 taxrate
 0
 1
-0.2
+0.0
 0.01
 1
 NIL
@@ -289,6 +289,17 @@ MONITOR
 525
 gini
 ( 2 * sum (map [ [x y] -> x * y ] n-values count turtles [ z -> z + 1 ] sort [wealth] of turtles) ) / (count turtles * (sum [wealth] of turtles)) - (count turtles + 1) / count turtles
+3
+1
+11
+
+MONITOR
+10
+525
+60
+570
+r
+exp (ln sum [wealth] of turtles / ticks )
 3
 1
 11
