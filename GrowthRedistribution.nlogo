@@ -79,7 +79,7 @@ taxrate
 taxrate
 0
 1
-0.0
+0.6
 0.01
 1
 NIL
@@ -299,7 +299,7 @@ MONITOR
 60
 570
 r
-exp (ln sum [wealth] of turtles / ticks )
+exp (ln mean [wealth] of turtles / ticks )
 3
 1
 11
