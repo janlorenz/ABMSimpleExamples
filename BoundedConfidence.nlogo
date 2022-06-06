@@ -238,7 +238,6 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot pol (histfreq [opinion] of turtles) 1\n\n; plot mean [mean [abs (opinion - [opinion] of myself)] of turtles] of turtles"
-"pen-1" 1.0 0 -7500403 true "" "plot pol (histfreq [opinion] of turtles) 0"
 
 @#$#@#$#@
 ## WHAT IS IT?
