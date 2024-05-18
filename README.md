@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/325832596.svg)](https://zenodo.org/doi/10.5281/zenodo.11214829)
+
 # ABMSimpleExamples
 
 Simple examples of agent-based models in NetLogo
